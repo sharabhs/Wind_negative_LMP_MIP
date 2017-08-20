@@ -41,8 +41,6 @@ option MIP = CPLEX;
 option optcr = 0;
 option optca = 0;
 
-execute_unload 'solutiongdx.gdx';
-
 display battery.l;
 display CharStat.l;
 display Energyinbatt.l;
