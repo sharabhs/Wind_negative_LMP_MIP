@@ -7,9 +7,9 @@ scalar Bigm /1000/;
 parameter LMP(years,days,blocks);
 parameter ChargeRate,DischargeRate;
 parameter WindGen(years,days,blocks);
-WindGen(years,days,blocks) = normal(2000,200);
+WindGen(years,days,blocks) = normal(1200,200);
 positive variable SOC;
-LMP(years,days,blocks) = uniform(-100,500);
+LMP(years,days,blocks) = uniform(-50,150);
 Binary variable CharStat(years,days,blocks) for denoting the status of charging or discharging for the battery ;
 scalar Rating Rating of the wind farm in kW /5000/;
 
@@ -18,7 +18,8 @@ positive variable battery;
 positive variable waste(years,days,blocks);
 positive variable WGen(years,days,blocks);
 positive variable sell(years,days,blocks);
-variable Revenue;
+*This is a variable generation code that uses an optimization based solvers to minimize wind curtailment
+variable Revenue_new;
 positive variable Energyinbatt(years,days,blocks);
 sell.up(years,days,blocks) = 2000;
 battery.up = 1500;
@@ -29,14 +30,14 @@ Equation PowBalanceEQ(years,days,blocks);           PowBalanceEQ(years,days,bloc
 Equation WgenEQ;                                    WgenEQ(years,days,blocks)..        WGen(years,days,blocks)=E=WindGen(years,days,blocks);
 Equation ChXorDis(years,days,blocks);               ChXorDis(years,days,blocks)..  Discharging(years,days,blocks)=L=(1-CharStat(years,days,blocks))*BigM;
 Equation SocEQ(years,days,blocks);                  SocEQ(years,days,blocks)$(ord(blocks) ge 1)..  Energyinbatt(years,days,blocks)=E=Energyinbatt(years,days,blocks-1)+((Charging(years,days,blocks)-Discharging(years,days,blocks))*0.25);
-Equation RevenueEQ;                                 RevenueEQ..  Revenue=E=sum((years,days,blocks),LMP(years,days,blocks)*(Sell(years,days,blocks)*0.25));
+Equation RevenueEQ;                                 RevenueEQ..  Revenue_new=E=sum((years,days,blocks),LMP(years,days,blocks)*(Sell(years,days,blocks)*0.25));
 Equation BatteryLimit(years,days,blocks);           BatteryLimit(years,days,blocks)..  Energyinbatt(years,days,blocks)=L=Battery;
 Equation ChXorDisEQ(years,days,blocks);             ChXorDisEQ(years,days,blocks)..  Charging(years,days,blocks)=L=CharStat(years,days,blocks)*BigM
 
 
 
 model WindFarmRevenuemax /all/;
-solve WindFarmRevenuemax maximizing Revenue using MIP;
+solve WindFarmRevenuemax maximizing Revenue_new using MIP;
 option MINLP = SCIP;
 Option LP = OSICPLEX;
 option NLP = SCIP;
@@ -49,7 +50,7 @@ execute_unload 'solutiongdx.gdx';
 display battery.l;
 display CharStat.l;
 display Energyinbatt.l;
-display Revenue.l;
+display Revenue_new.l;
 display LMP;
 display sell.l;
 display waste.l;
