@@ -41,7 +41,7 @@ solve WindFarmRevenuemax maximizing Revenue_new using MIP;
 option MINLP = SCIP;
 Option LP = OSICPLEX;
 option NLP = SCIP;
-option MIP = OSICPLEX;
+option MIP = CPLEX;
 option optcr = 0;
 option optca = 0;
 
