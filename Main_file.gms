@@ -37,6 +37,9 @@ Equation ChXorDisEQ(years,days,blocks);             ChXorDisEQ(years,days,blocks
 
 model WindFarmRevenuemax /all/;
 solve WindFarmRevenuemax maximizing Revenue using MIP;
+option MINLP = SCIP;
+Option LP = OSICPLEX;
+option NLP = SCIP;
 option MIP = OSICPLEX;
 option optcr = 0;
 option optca = 0;
