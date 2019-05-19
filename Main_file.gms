@@ -3,7 +3,7 @@ set days /1*1/;
 set blocks /1*30/;
 
 
-scalar Bigm /100000/;
+scalar Bigm /1000/;
 parameter LMP(years,days,blocks);
 parameter ChargeRate,DischargeRate;
 parameter WindGen(years,days,blocks);
@@ -37,7 +37,7 @@ Equation ChXorDisEQ(years,days,blocks);             ChXorDisEQ(years,days,blocks
 
 model WindFarmRevenuemax /all/;
 solve WindFarmRevenuemax maximizing Revenue using MIP;
-option MIP = CPLEX;
+option MIP = OSICPLEX;
 option optcr = 0;
 option optca = 0;
 
