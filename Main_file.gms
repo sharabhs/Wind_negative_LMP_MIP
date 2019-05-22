@@ -34,7 +34,7 @@ Equation RevenueEQ;                                 RevenueEQ..  Revenue_new=E=s
 Equation BatteryLimit(years,days,blocks);           BatteryLimit(years,days,blocks)..  Energyinbatt(years,days,blocks)=L=Battery;
 Equation ChXorDisEQ(years,days,blocks);             ChXorDisEQ(years,days,blocks)..  Charging(years,days,blocks)=L=CharStat(years,days,blocks)*BigM
 
-option MIP = BDMLP; 
+option MIP = CPLEX; 
 
 model WindFarmRevenuemax /all/;
 solve WindFarmRevenuemax maximizing Revenue_new using MIP;
