@@ -36,6 +36,10 @@ Equation ChXorDisEQ(years,days,blocks);             ChXorDisEQ(years,days,blocks
 
 option MIP = CPLEX; 
 
+option MINLP = SCIP;
+option NLP = SCIP;
+option MIP = BDMLP;
+
 model WindFarmRevenuemax /all/;
 solve WindFarmRevenuemax maximizing Revenue_new using MIP;
 option MINLP = SCIP;
